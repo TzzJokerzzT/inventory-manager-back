@@ -7,35 +7,35 @@
 
 ## Phase 1 — Bootstrap & Auth Foundation (17 tasks)
 
-### T-1.1: Project Configuration & Build Setup
+### T-1.1: Project Configuration & Build Setup ✅
 - **Description:** Update `package.json` with all required deps (express, pg, jsonwebtoken, bcrypt, valibot, helmet, cors, express-rate-limit, morgan, multer, cookie-parser, vitest, supertest, biome, @types/*). Add all scripts (dev, build, start, db:migrate, db:seed, test, lint, format). Update `tsconfig.json` with path aliases. Create `.env.example`, `biome.json`, `vitest.config.ts`. Create empty `src/` directory structure per design. Create `tests/` directories.
 - **Files:** `package.json` (modify), `tsconfig.json` (modify), `biome.json` (new), `.env.example` (new), `.env` (new), empty dirs
 - **Deps:** None (foundation)
 - **Est. lines:** ~70
 - **AC:** REQ-1.1 — `bun install` succeeds, `bun run dev` starts on 4000, env vars loadable
 
-### T-1.2: Shared Domain Error Classes
+### T-1.2: Shared Domain Error Classes ✅
 - **Description:** Abstract `AppError` base class with message, statusCode, code, details. Five subclasses: `NotFoundError` (404, NOT_FOUND), `ValidationError` (400, VALIDATION_ERROR), `UnauthorizedError` (401, UNAUTHORIZED), `ForbiddenError` (403, FORBIDDEN), `ConflictError` (409, CONFLICT). Each preserves prototype chain via `Object.setPrototypeOf` and captures stack trace.
 - **Files:** `src/shared/errors/AppError.ts`, `NotFoundError.ts`, `ValidationError.ts`, `UnauthorizedError.ts`, `ForbiddenError.ts`, `ConflictError.ts`
 - **Deps:** T-1.1
 - **Est. lines:** ~70
 - **AC:** REQ-1.12 — Errors map to correct HTTP codes, instanceof checks work, AppError cannot be instantiated directly
 
-### T-1.3: Shared Types, Constants & Utilities
+### T-1.3: Shared Types, Constants & Utilities ✅
 - **Description:** Express Request augmentation (`express.d.ts`) adding `user: { userId, email, role }`. Generic `PaginatedResult<T>` and `PaginationParams`. Role constants (`ADMIN`, `OPERADOR`, `SOLO_LECTURA`). Movement type string constants. `asyncHandler` wrapper for Express async routes. Pagination offset/limit helpers.
 - **Files:** `src/shared/types/express.d.ts`, `pagination.ts`, `src/shared/constants/roles.ts`, `movement-types.ts`, `src/shared/utils/async-handler.ts`, `pagination.ts`
 - **Deps:** T-1.1
 - **Est. lines:** ~85
 - **AC:** REQ-X.1 — req.user is typed, PaginatedResult compiles generically, asyncHandler catches errors and forwards to next()
 
-### T-1.4: Database Connection Pool & Migration Runner
+### T-1.4: Database Connection Pool & Migration Runner ✅
 - **Description:** `connection.ts`: `createPool()` factory using `pg.Pool` with DATABASE_URL, max 20 connections, 30s idle timeout, 2s connection timeout, pool error handler. `closePool()` for graceful shutdown. `migrate.ts`: reads `.up.sql` from migrations directory, tracks applied in `schema_migrations` table, applies pending sequentially within transactions.
 - **Files:** `src/infrastructure/database/postgres/connection.ts`, `migrate.ts`
 - **Deps:** T-1.1
 - **Est. lines:** ~85
 - **AC:** REQ-1.2, REQ-6.11 — Pool connects with valid DATABASE_URL, migration runner applies SQL files in order, re-running skips already-applied
 
-### T-1.5: SQL Migration 001 — Roles, Users & Refresh Tokens
+### T-1.5: SQL Migration 001 — Roles, Users & Refresh Tokens ✅
 - **Description:** Three sequential migrations with UP/DOWN: `001-roles` (id UUID PK, name VARCHAR UNIQUE, description TEXT). `002-users` (id UUID PK, email VARCHAR UNIQUE NOT NULL, password_hash VARCHAR NOT NULL, name VARCHAR NOT NULL, role_id UUID FK->roles, active BOOLEAN DEFAULT TRUE, created_at, updated_at). `003-refresh-tokens` (id UUID PK, user_id UUID FK->users, token_hash VARCHAR NOT NULL, expires_at TIMESTAMPTZ NOT NULL, revoked BOOLEAN DEFAULT FALSE, created_at). Indexes on users.email, refresh_tokens.user_id, refresh_tokens.revoked.
 - **Files:** `migrations/001-roles.{up,down}.sql`, `002-users.{up,down}.sql`, `003-refresh-tokens.{up,down}.sql`
 - **Deps:** T-1.4
