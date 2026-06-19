@@ -1,5 +1,5 @@
 title: sdd/inventory-backend-core/apply-progress
-slice: 2
+slice: 3
 tasks_completed:
   - T-1.6
   - T-1.7
@@ -9,7 +9,7 @@ tasks_completed:
   - T-1.11
   - T-1.12
   - T-1.13
-branch: feature/inventory-backend-slice-2
+branch: feature/inventory-backend-slice-3
 files:
   - src/domain/entities/User.ts
   - src/domain/entities/Role.ts
@@ -28,5 +28,13 @@ files:
   - src/infrastructure/http/middleware/auth.middleware.ts
   - src/infrastructure/http/middleware/rbac.middleware.ts
   - src/presentation/controllers/AuthController.ts
+  - src/shared/schemas/auth.schemas.ts
+  - src/infrastructure/http/middleware/validator.middleware.ts
+  - src/infrastructure/http/middleware/express-extend.d.ts
+  - src/infrastructure/http/middleware/rate-limiter.middleware.ts
+  - src/infrastructure/di/container.ts
+  - src/infrastructure/http/routes/auth.routes.ts
+  - src/infrastructure/http/server.ts
+  - src/index.ts
 notes: |
-  Implemented auth foundation: entities, repos, ports, services, use-cases, middleware and controller.
+  Implemented auth foundation: entities, repos, ports, services, use-cases, middleware and controller. Added validation schemas (Valibot), validator middleware, rate limiter, DI container, auth routes, server and entrypoint for slice 3.
