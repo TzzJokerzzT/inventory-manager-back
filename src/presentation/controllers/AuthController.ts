@@ -1,14 +1,14 @@
-import { Request, Response, NextFunction } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { LoginUseCase } from "../../application/use-cases/auth/LoginUseCase";
-import { RefreshTokenUseCase } from "../../application/use-cases/auth/RefreshTokenUseCase";
 import { LogoutUseCase } from "../../application/use-cases/auth/LogoutUseCase";
+import { RefreshTokenUseCase } from "../../application/use-cases/auth/RefreshTokenUseCase";
 
 export class AuthController {
   constructor(
     private loginUC: LoginUseCase,
     private refreshUC: RefreshTokenUseCase,
     private logoutUC: LogoutUseCase,
-  ) {}
+  ) { }
 
   async login(req: Request, res: Response, next: NextFunction) {
     try {

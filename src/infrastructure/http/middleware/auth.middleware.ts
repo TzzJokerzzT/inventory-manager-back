@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { JwtService } from "../../services/JwtService";
 import type { Pool } from "pg";
-import { UserRepository } from "../database/repositories/UserRepository";
+import { UserRepository } from "../../database/repositories/UserRepository";
 
 declare global {
   namespace Express {
